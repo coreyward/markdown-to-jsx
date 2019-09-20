@@ -729,7 +729,7 @@ export function compiler(markdown, options) {
   options = options || {};
   options.overrides = options.overrides || {};
   options.slugify = options.slugify || slugify;
-  options.namedCodesToUnicode = options.namedCodesToUnicode 
+  options.namedCodesToUnicode = options.namedCodesToUnicode
     ? {...namedCodesToUnicode, ...options.namedCodesToUnicode}
     : namedCodesToUnicode;
 
@@ -773,9 +773,19 @@ export function compiler(markdown, options) {
       )
     );
 
+    if (options.renderArray) {
+      return arr
+    }
+
     let jsx;
     if (arr.length > 1) {
-      jsx = inline ? <span key="outer">{arr}</span> : <div key="outer">{arr}</div>;
+      if (options.wrapper) {
+        jsx = React.createElement(options.wrapper, {}, arr)
+      } else {
+        jsx = inline
+          ? <span key="outer">{arr}</span>
+          : <div key="outer">{arr}</div>;
+      }
     } else if (arr.length === 1) {
       jsx = arr[0];
 
